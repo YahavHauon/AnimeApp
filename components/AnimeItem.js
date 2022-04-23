@@ -9,8 +9,7 @@ const AnimeItem = ({ imageUrl, title, onPress, modePressed }) => {
         pressed && modePressed ? styles.pressed : null,
       ]}
     >
-
-      <Image source={{ uri: `${imageUrl}` }} style={styles.image} />
+      <Image source={{ uri: imageUrl }} style={styles.image} />
       <MyAppText style={styles.text}>{title}</MyAppText>
     </Pressable>
   );
@@ -31,10 +30,6 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     flexWrap: "wrap",
-  },
-  innerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
   },
   image: {
     width: 75,
