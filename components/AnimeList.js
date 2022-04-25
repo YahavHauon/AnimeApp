@@ -2,13 +2,14 @@ import { useNavigation } from "@react-navigation/native";
 import { useContext, useEffect, useState } from "react";
 import { FlatList, View, ActivityIndicator, StyleSheet } from "react-native";
 import GeneralContext from "../store/GeneralContext";
+import { Colors } from "../util/Colors";
 import AnimeItem from "./AnimeItem";
 
 
 const AnimeList = () => {
   const [page, setPage] = useState(1);
   const navigation = useNavigation();
-  const { animeList, fetchAnime } = useContext(GeneralContext);
+  const { animeList, fetchAnime, isLoading } = useContext(GeneralContext);
 
   useEffect(() => {
     fetchAnime(page);
@@ -34,18 +35,18 @@ const AnimeList = () => {
   };
 
   return (
-    <View>
-      {animeList ? (
-        <FlatList
-          keyExtractor={(item) => {
-            return item.mal_id;
-          }}
-          data={animeList}
-          renderItem={listRenderItem}
-          onEndReachedThreshold={0.2}
-          onEndReached={() => fetchMoreData()}
-        />
-      ) : <ActivityIndicator size="large" />}
+    <View style={styles.container}>
+      {isLoading && animeList && animeList.length === 0 ? <ActivityIndicator style={styles.loading} color={Colors.headerAppColor} size="large" /> : null}
+      <FlatList
+        keyExtractor={(item) => {
+          return item.mal_id;
+        }}
+        data={animeList}
+        renderItem={listRenderItem}
+        onEndReachedThreshold={0.2}
+        onEndReached={() => fetchMoreData()}
+        ListFooterComponent={() => animeList?.length !== 0 ? <ActivityIndicator size="small" /> : null}
+      />
     </View>
   );
 };
@@ -53,9 +54,14 @@ const AnimeList = () => {
 export default AnimeList;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   loading: {
-    alignItems: 'center',
-
-
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   }
 });

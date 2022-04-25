@@ -24,7 +24,7 @@ const Stack = createNativeStackNavigator();
 
 const DrawerNavigator = (mainScreen) => {
   return <Drawer.Navigator initialRouteName={mainScreen} drawerContent={props => {
-    return <DrawerComp />
+    return <DrawerComp {...props} />
   }}
     screenOptions={{
       headerStyle: { backgroundColor: Colors.headerAppColor },
@@ -51,7 +51,7 @@ const TabNavigator = () => {
         ,
       }}
     />
-    <Tab.Screen
+    {/* <Tab.Screen
       name={screensNames.MyAnimeList}
       component={MyAnimeList}
       options={{
@@ -60,7 +60,7 @@ const TabNavigator = () => {
         tabBarIcon: ({ color, size }) =>
           <Ionicons name="md-list" size={size} color={color} />
       }}
-    />
+    /> */}
 
     <Tab.Screen
       name={screensNames.AddAnime}
@@ -109,6 +109,13 @@ export default function App() {
                   }} />)
                 }
               }} />
+              <Stack.Screen
+                name={screensNames.MyAnimeList}
+                component={MyAnimeList}
+                options={{
+                  title: screens.myAnimeList,
+                }}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </RootSiblingParent>

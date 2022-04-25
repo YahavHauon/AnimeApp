@@ -2,11 +2,11 @@ import { View, Pressable, StyleSheet } from 'react-native';
 import { Colors } from '../util/Colors';
 import MyAppText from './MyAppText ';
 
-const Button = ({ children, onPress, style }) => {
+const Button = ({ children, onPress, style, disable }) => {
     return (
         <View style={style}>
             <Pressable style={({ pressed }) => pressed ? styles.pressed : null} onPress={onPress}>
-                <View style={styles.button}>
+                <View style={disable ? styles.disable : styles.button}>
                     <MyAppText style={styles.buttonText}>
                         {children}
                     </MyAppText>
@@ -31,5 +31,11 @@ const styles = StyleSheet.create({
     },
     pressed: {
         opacity: 0.75,
+    },
+    disable: {
+        borderRadius: 6,
+        padding: 10,
+        backgroundColor: 'gray',
+        width: 160,
     }
 })

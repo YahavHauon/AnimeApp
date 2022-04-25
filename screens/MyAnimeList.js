@@ -10,12 +10,7 @@ import { StringHelper } from "../util/strings";
 import Button from '../components/Button';
 
 const MyAnimeList = ({ navigation }) => {
-    const { myAnimeListState, deleteAnime, deleteAllAnime, myAnimeListProvider } = useContext(GeneralContext);
-
-    useEffect(() => {
-        myAnimeListProvider();
-    }, []);
-
+    const { myAnimeListState, deleteAnime, deleteAllAnime } = useContext(GeneralContext);
     const listRenderItem = ({ item }) => {
         return (
             <AnimeItem

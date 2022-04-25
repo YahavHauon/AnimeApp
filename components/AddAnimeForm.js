@@ -1,8 +1,8 @@
-import { View, StyleSheet, Pressable, Keyboard, Alert, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, Pressable, Keyboard, Alert } from 'react-native';
 import Input from './Input';
 import { AlertMsgs, StringHelper, ToastMsg } from '../util/strings';
 import MyAppText from './MyAppText ';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../components/Button';
 import Toast from 'react-native-root-toast';
 
@@ -12,7 +12,22 @@ const AddAnimeForm = ({ onAdd }) => {
         rateing: '',
         description: '',
     });
+    const [addButtonValid, setAddButtonValid] = useState(false);
+    const animeData = {
+        title: inputValues.title ? inputValues.title : '',
+        rateing: +inputValues.rateing,
+        description: inputValues.description,
+    }
+    useEffect(() => {
+        const titleIsValid = animeData.title.trim().length > 0;
+        if (animeData.title.trim().length === 0) {
+            setAddButtonValid(false);
+        }
+        if (animeData.title.trim().length === 1) {
+            setAddButtonValid(true);
+        }
 
+    }, [inputValues]);
     const inputChangeHandler = (inputIdentifier, enteredValue) => {
         setInputValues((currInputValues) => {
             return {
@@ -23,22 +38,15 @@ const AddAnimeForm = ({ onAdd }) => {
     }
 
     const sumbitHandler = () => {
-        const animeData = {
-            title: inputValues.title ? inputValues.title : '',
-            rateing: +inputValues.rateing,
-            description: inputValues.description,
-        }
-        const titleIsValid = animeData.title.trim().length > 0;
-        if (typeof animeData.rateing === 'undefined' || animeData.rateing === '' || !titleIsValid) {
-            Alert.alert(AlertMsgs.inputMissingTitle, AlertMsgs.inputMissingTitle);
-            clearHandler();
-            return;
-        }
         onAdd(animeData);
         clearHandler();
         Toast.show(ToastMsg.animeAdded, {
             duration: 1000,
         })
+    }
+
+    const invalidAddButton = () => {
+        Alert.alert(AlertMsgs.inputMissingTitle, AlertMsgs.inputMissingBody);
     }
 
     const clearHandler = () => {
@@ -72,7 +80,8 @@ const AddAnimeForm = ({ onAdd }) => {
             }} />
             <View style={styles.button}>
                 <Button style={styles.add} onPress={clearHandler}>{StringHelper.clear}</Button>
-                <Button style={styles.add} onPress={sumbitHandler}>{StringHelper.add}</Button>
+                {addButtonValid ? <Button style={styles.add} onPress={sumbitHandler}>{StringHelper.add}</Button> :
+                    <Button style={styles.add} onPress={invalidAddButton} disable>{StringHelper.add}</Button>}
             </View>
         </Pressable>
     );

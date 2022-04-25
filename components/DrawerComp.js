@@ -4,14 +4,14 @@ import { View, StyleSheet, Alert } from 'react-native';
 import ImagePickerProfile from './ImagePickerProfile';
 import { useNavigation } from '@react-navigation/native';
 
-const DrawerComp = () => {
-    const navigation = useNavigation();
+const DrawerComp = ({ navigation }) => {
     const rateAppHandler = () => {
         Alert.alert('Rate Our App', 'Comeing soon !');
     }
 
     const moveToHandler = (screen) => {
         navigation.navigate(screen);
+        navigation.closeDrawer();
     }
 
     return (
